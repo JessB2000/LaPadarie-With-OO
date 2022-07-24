@@ -5,7 +5,7 @@ import { Delivery } from '../models/delivery';
 export async function getDeliverys(req: Request, res: Response): Promise<Response | void> {
     try {
         const conn = await connect();
-        const delivery = await conn.query(`SELECT delivery.*, cliente.nome, cliente.endereco, cliente.cpf FROM delivery INNER JOIN cliente ON cliente.id = delivery.id_cliente`);
+        const delivery = await conn.query(`SELECT delivery.*, cliente.nome, cliente.endereco, cliente.cpf FROM delivery INNER JOIN cliente ON cliente.id = delivery.cliente_id`);
         return res.json(delivery[0]);
     }
     catch (e) {
@@ -16,7 +16,7 @@ export async function getDeliverys(req: Request, res: Response): Promise<Respons
 export async function createDelivery(req: Request, res: Response) {
     const newDelivery: Delivery = req.body;
     const conn = await connect();
-    await conn.query(`INSERT INTO delivery (entrega, id_cliente) VALUES(?, ?)`, [newDelivery]);
+    await conn.query(`INSERT INTO delivery (codigo, cliente_id) VALUES('?', '?')`, [newDelivery]);
     res.json({
         message: 'Novo Delivery Criado'
     });
@@ -25,7 +25,7 @@ export async function createDelivery(req: Request, res: Response) {
 export async function getDelivery(req: Request, res: Response) {
     const id = req.params.id; 
     const conn = await connect();
-    const delivery = await conn.query('SELECT delivery.*, delivery.id_cliente, cliente.nome, cliente.endereco, cliente.cpf FROM delivery INNER JOIN cliente ON cliente.id = delivery.id_cliente WHERE id = ?', [id]);
+    const delivery = await conn.query('SELECT delivery.*, delivery.cliente_id, cliente.nome, cliente.endereco, cliente.cpf FROM delivery INNER JOIN cliente ON cliente.id = delivery.cliente_id WHERE id = ?', [id]);
     res.json(delivery[0]);
 }
 
@@ -42,7 +42,7 @@ export async function updateDelivery(req: Request, res: Response) {
     const id = req.params.id;
     const updateDelivery: Delivery = req.body;
     const conn = await connect();
-    await conn.query('`UPDATE delivery SET entrega = ?, id_cliente = ? WHERE id = ?', [updateDelivery, id]);
+    await conn.query('`UPDATE delivery SET codigo = ?, cliente_id = ? WHERE id = ?', [updateDelivery, id]);
     res.json({
         message: 'Cliente Modificado'
     });

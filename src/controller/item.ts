@@ -9,7 +9,7 @@ import { Item } from '../models/item';
 export async function getItems(req: Request, res: Response): Promise<Response | void> {
     try {
         const conn = await connect();
-        const item = await conn.query(`SELECT produto.id, produto.nomeP, produto.area, item.quantidade, produto.preco FROM item JOIN produto ON item.id_produto = produto.id WHERE item.id_pedido = 1`);
+        const item = await conn.query(`SELECT produto.id, produto.nomeP, produto.area, item.quantidade, produto.preco FROM item JOIN produto ON item.produto_id = produto.id WHERE item.pedido_id = 1`);
         return res.json(item[0]);
     }
     catch (e) {
@@ -20,7 +20,7 @@ export async function getItems(req: Request, res: Response): Promise<Response | 
 export async function createItem(req: Request, res: Response) {
     const newItem: Item = req.body;
     const conn = await connect();
-    await conn.query(`INSERT INTO item (id_produto, id_pedido, quantidade) VALUES(?, ?, ?)`, [newItem]);
+    await conn.query(`INSERT INTO item (quantidade, pedido_id, produto_id) VALUES('?', '?', '?')`, [newItem]);
     res.json({
         message: 'Novo Item Criado'
     });
@@ -29,8 +29,8 @@ export async function createItem(req: Request, res: Response) {
 export async function getItem(req: Request, res: Response) {
     const id = req.params.id; 
     const conn = await connect();
-    const cliente = await conn.query('SELECT produto.id, produto.nomeP, produto.area, item.quantidade, produto.preco FROM item JOIN produto ON item.id_produto = produto.id WHERE item.id_pedido = 1', [id]);
-    res.json(cliente[0]);
+    const item = await conn.query('SELECT produto.id, produto.nomeP, produto.area, item.quantidade, produto.preco FROM item JOIN produto ON item.produto_id = produto.id WHERE item.pedido_id = 1', [id]);
+    res.json(item[0]);
 }
 
 export async function deleteItem(req: Request, res: Response) {
@@ -46,7 +46,7 @@ export async function updateItem(req: Request, res: Response) {
     const id = req.params.id;
     const updateItem: Item = req.body;
     const conn = await connect();
-    await conn.query('`UPDATE item SET id_produto = ?, id_pedido = ?, quantidade = ? WHERE id = ?`', [updateItem, id]);
+    await conn.query('`UPDATE item SET produto_id = ?, pedido_id = ?, quantidade = ? WHERE id = ?`', [updateItem, id]);
     res.json({
         message: 'Item Modificado'
     });

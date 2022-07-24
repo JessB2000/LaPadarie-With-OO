@@ -1,15 +1,15 @@
 import { Router } from "express";
 import { createCliente, deleteCliente, getCliente, getClientes, updateCliente } from "../controller/cliente";
 
-const router = Router();
+const ClienteRouter = Router();
 
-router.route('/')
+ClienteRouter.route('/')
     .get(getClientes)
     .post(createCliente);
 
-router.route('/:id')
+ClienteRouter.route('/:id')
     .get(getCliente)
     .delete(deleteCliente)
     .put(updateCliente);
 
-export default router;
+export default ClienteRouter;

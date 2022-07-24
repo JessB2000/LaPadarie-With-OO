@@ -1,11 +1,14 @@
+import dotenv from 'dotenv'
+dotenv.config();
 import { createPool, Pool } from 'mysql2/promise'
 
 export async function connect(): Promise<Pool> {
     const connection = await createPool({
         host: process.env.DB_HOST,
+        port:3306, 
         user: process.env.DB_USER,
-        database:process.env.DB_NAME,
-        password: process.env.DB_PASSWORD
+        password: process.env.DB_PASSWORD,
+        database:process.env.DB_NAME
     });
     return connection;
 }

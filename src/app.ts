@@ -1,10 +1,15 @@
 import dotenv from 'dotenv'
 import express from 'express'
 import morgan from 'morgan'
+import ClienteRouter from './routes/cliente';
+import DeliveryRouter from './routes/delivery';
+import ItemRouter from './routes/item';
+import PedidoRouter from './routes/pedido';
+import ProdutoRouter from './routes/produto';
 
 export class App {
     public app: express.Application; 
-    private port = process.env.PORT||3000; 
+    private port = 3000; 
     constructor(){
      this.app = express(); 
      this.middlewares(); 
@@ -16,12 +21,13 @@ export class App {
         this.app.use(express.json());
     }
     private routes() {
-        this.app.use();
-        this.app.use();
+        this.app.use('/cliente', ClienteRouter);
+        this.app.use('/delivery', DeliveryRouter);
+        this.app.use('/item',ItemRouter);
+        this.app.use('/pedido', PedidoRouter); 
+        this.app.use('/produto',ProdutoRouter); 
     }
     async listen(): Promise<void> {
-        await this.app.listen(this.port, () => {
-            console.log(`Running in the ${this.port}'s`)
-          }); 
+        await this.app.listen(this.port); 
     }
 }
