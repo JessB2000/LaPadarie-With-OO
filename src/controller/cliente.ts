@@ -19,7 +19,7 @@ export async function getClientes(req: Request, res: Response): Promise<Response
 export async function createCliente(req: Request, res: Response) {
     const newCliente: Cliente = req.body;
     const conn = await connect();
-    await conn.query(`INSERT INTO cliente (nome, endereco, cpf, pedido_id) VALUES ('?', '?', '?', '?')`, [newCliente]);
+    await conn.query(`INSERT INTO cliente (nome, endereco, cpf, pedido_id) VALUES (?, ?, ?, ?)`, [newCliente.nome, newCliente.endereco, newCliente.cpf, newCliente.pedido]);
     res.json({
         message: 'Novo Cliente Criado'
     });
@@ -45,7 +45,7 @@ export async function updateCliente(req: Request, res: Response) {
     const id = req.params.id;
     const updateCliente: Cliente = req.body;
     const conn = await connect();
-    await conn.query('UPDATE cliente SET nome = ?, endereco = ?, cpf = ?, pedido_id = ? WHERE id = ?', [updateCliente, id]);
+    await conn.query('UPDATE cliente SET nome = ?, endereco = ?, cpf = ?, pedido_id = ? WHERE id = ?', [updateCliente.nome, updateCliente.endereco, updateCliente.cpf, updateCliente.pedido, updateCliente.id]);
     res.json({
         message: 'Cliente Modificado'
     });

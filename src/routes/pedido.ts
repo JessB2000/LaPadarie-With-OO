@@ -5,11 +5,11 @@ const PedidoRouter = Router();
 
 PedidoRouter.route('/')
     .get(getPedidos)
-    .post(createPedido);
+    .post(createPedido)
 
 PedidoRouter.route('/:id')
     .get(getPedido)
     .delete(deletePedido)
-    .put(updatePedido);
+    .put(updatePedido)
 
 export default PedidoRouter;

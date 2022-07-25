@@ -5,11 +5,11 @@ const ProdutoRouter = Router();
 
 ProdutoRouter.route('/')
     .get(getProdutos)
-    .post(createProduto);
+    .post(createProduto)
 
 ProdutoRouter.route('/:id')
     .get(getProduto)
     .delete(deleteProduto)
-    .put(updateProduto);
+    .put(updateProduto)
 
 export default ProdutoRouter;

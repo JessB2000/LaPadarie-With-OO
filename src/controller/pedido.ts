@@ -20,7 +20,7 @@ export async function getPedidos(req: Request, res: Response): Promise<Response 
 export async function createPedido(req: Request, res: Response) {
     const newPedido: Pedido = req.body;
     const conn = await connect();
-    await conn.query(`INSERT INTO pedido (entrega) VALUES('?')`, [newPedido]);
+    await conn.query(`INSERT INTO pedido (entrega) VALUES (?)`, [newPedido.entrega]);
     res.json({
         message: 'Novo Pedido Criado'
     });
@@ -46,7 +46,7 @@ export async function updatePedido(req: Request, res: Response) {
     const id = req.params.id;
     const updatePedido: Pedido = req.body;
     const conn = await connect();
-    await conn.query('UPDATE pedido SET entrega = ? WHERE id = ?', [updatePedido, id]);
+    await conn.query('UPDATE pedido SET entrega = ? WHERE id = ?', [updatePedido.entrega, updatePedido.id]);
     res.json({
         message: 'Pedido Modificado'
     });

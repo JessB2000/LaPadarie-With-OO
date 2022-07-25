@@ -20,7 +20,7 @@ export async function getItems(req: Request, res: Response): Promise<Response | 
 export async function createItem(req: Request, res: Response) {
     const newItem: Item = req.body;
     const conn = await connect();
-    await conn.query(`INSERT INTO item (quantidade, pedido_id, produto_id) VALUES('?', '?', '?')`, [newItem]);
+    await conn.query(`INSERT INTO item (quantidade, pedido_id, produto_id) VALUES(?, ?, ?)`, [newItem.quantidade, newItem.produto, newItem.produto]);
     res.json({
         message: 'Novo Item Criado'
     });
@@ -46,7 +46,7 @@ export async function updateItem(req: Request, res: Response) {
     const id = req.params.id;
     const updateItem: Item = req.body;
     const conn = await connect();
-    await conn.query('`UPDATE item SET produto_id = ?, pedido_id = ?, quantidade = ? WHERE id = ?`', [updateItem, id]);
+    await conn.query('`UPDATE item SET quantidade = ?, pedido_id = ?, produto_id = ? WHERE id = ?`', [updateItem.quantidade, updateItem.pedido, updateItem.produto, updateItem.id]);
     res.json({
         message: 'Item Modificado'
     });

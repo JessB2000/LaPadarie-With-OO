@@ -19,7 +19,7 @@ export async function getProdutos(req: Request, res: Response): Promise<Response
 export async function createProduto(req: Request, res: Response) {
     const newProduto: Produto = req.body;
     const conn = await connect();
-    await conn.query(`INSERT INTO produto (nomeP, area, preco) VALUES('?', '?', '?')`, [newProduto]);
+    await conn.query('INSERT INTO produto (nomeP, area, preco) VALUES (?, ?, ?)', [newProduto.nomeP, newProduto.area, newProduto.preco]);
     res.json({
         message: 'Novo Produto Criado'
     });
@@ -45,7 +45,7 @@ export async function updateProduto(req: Request, res: Response) {
     const id = req.params.id;
     const updateProduto: Produto = req.body;
     const conn = await connect();
-    await conn.query('UPDATE produto SET nomeP = ?, area = ?, preco = ? WHERE id = ?', [updateProduto, id]);
+    await conn.query('UPDATE produto SET nomeP = ?, area = ?, preco = ? WHERE id = ?', [updateProduto.nomeP, updateProduto.area, updateProduto.preco, updateProduto.id]);
     res.json({
         message: 'Produto Modificado'
     });
